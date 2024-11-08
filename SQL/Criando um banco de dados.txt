@@ -1,0 +1,28 @@
+-- Cria um banco de dados chamado "firstname"
+CREATE DATABASE firstname;
+
+-- Cria a tabela "periodicos" para armazenar informações sobre periódicos
+CREATE TABLE periodicos (
+    id INT AUTO_INCREMENT PRIMARY KEY, -- Chave primária auto-incremental
+    nome_periodico VARCHAR(20), -- Nome do periódico
+    issn INT, -- Número Internacional Normalizado de Publicação Serial (ISSN)
+    id_editora INT, -- Chave estrangeira referenciando a tabela "editora"
+    FOREIGN KEY (id_editora) REFERENCES editora(id) -- Define a relação com a tabela "editora"
+);
+
+-- Cria a tabela "editora" para armazenar informações sobre as editoras
+CREATE TABLE editora (
+    id INT AUTO_INCREMENT PRIMARY KEY, -- Chave primária auto-incremental
+    nome_editora VARCHAR(120) UNIQUE, -- Nome da editora (único para evitar duplicatas)
+    pais VARCHAR(5), -- País de origem da editora
+);
+
+-- Insere duas editoras na tabela "editora"
+INSERT INTO editora (nome_editora, pais) VALUES ('IEEE', 'EUA'), ('DataScienceMagazine', 'EUA');
+
+-- **ERRO: O valor '3' para id_editora não existe na tabela editora.**
+-- Corrigindo para inserir na editora correta (por exemplo, 'IEEE')
+INSERT INTO periodicos (nome_periodico, issn, id_editora) VALUES ('Special Issue', '15679516', 1);
+
+-- Seleciona todos os dados da tabela "periodicos"
+SELECT * FROM periodicos;
