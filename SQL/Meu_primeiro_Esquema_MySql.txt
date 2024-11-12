@@ -1,0 +1,53 @@
+-- Cria um novo banco de dados chamado "TEST_DATA"
+CREATE DATABASE TEST_DATA;
+
+-- Utiliza o banco de dados recém-criado
+USE TEST_DATA;
+
+-- Cria uma tabela para armazenar informações sobre pessoas
+
+CREATE TABLE person (
+    person_id SMALLINT UNSIGNED, -- Identificador único da pessoa
+    fname VARCHAR(20),           -- Primeiro nome
+    lname VARCHAR(20),           -- Último nome
+    gender ENUM('M', 'F'),       -- Gênero (M para masculino, F para feminino)
+    birth_date DATE,             -- Data de nascimento
+    street VARCHAR(20),          -- Rua
+    city VARCHAR(20),            -- Cidade
+    state VARCHAR(20),           -- Estado
+    country VARCHAR(20),         -- País
+    postal_code VARCHAR(20),     -- CEP
+    PRIMARY KEY (person_id)      -- Define a coluna "person_id" como chave primária
+);
+
+-- Cria uma tabela para armazenar os alimentos favoritos de cada pessoa
+
+CREATE TABLE favorite_food (
+    person_id SMALLINT UNSIGNED, -- Referência à pessoa (chave estrangeira)
+    food VARCHAR(20),            -- Nome do alimento favorito
+    PRIMARY KEY (person_id, food), -- Chave primária composta para garantir a unicidade da combinação de pessoa e alimento
+    FOREIGN KEY (person_id) REFERENCES person(person_id) -- Define uma chave estrangeira referenciando a tabela "person"
+);
+
+-- Mostra a estrutura da tabela "person"
+DESC person;
+
+-- Mostra a estrutura da tabela "favorite_food"
+DESC favorite_food;
+
+-- Lista todos os bancos de dados existentes
+SHOW DATABASES;
+
+-- Seleciona todas as restrições da tabela "favorite_food"
+SELECT * FROM information_schema.table_constraints
+WHERE table_name = 'favorite_food';
+
+constraint pk_favorite_food primary key(person_id, food)
+
+Chave Primária: Essa restrição garante que a combinação de person_id e food seja única dentro da tabela.
+O que isso significa? Significa que uma pessoa não pode ter o mesmo alimento listado como favorito mais de uma vez. Por exemplo, se uma pessoa gosta de pizza, ela só pode ter uma entrada com food como 'Pizza'.
+
+constraint fk_favorite_food_person_id foreign key(person_id) references person(person_id)
+
+Chave Estrangeira: Essa restrição estabelece um relacionamento entre a tabela Favorite_food e a tabela Person.
+O que isso significa? O person_id na tabela Favorite_food deve referenciar um person_id válido na tabela Person. Em outras palavras, um alimento só pode ser associado a uma pessoa que realmente exista na tabela Person.
